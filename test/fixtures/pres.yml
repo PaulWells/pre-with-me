@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  name: MyString
+  description: MyString
+  date: MyString
+  latitude: 1
+  longitude: 1
+  facebook_event_id: MyString
+
+two:
+  name: MyString
+  description: MyString
+  date: MyString
+  latitude: 1
+  longitude: 1
+  facebook_event_id: MyString

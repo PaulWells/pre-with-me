@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First user:</b>
+  <%= @friendship.first_user_id %>
+</p>
+
+<p>
+  <b>Second user:</b>
+  <%= @friendship.second_user_id %>
+</p>
+
+<p>
+  <b>Relationship:</b>
+  <%= @friendship.relationship %>
+</p>
+
+<p>
+  <b>Last pre date:</b>
+  <%= @friendship.last_pre_date %>
+</p>
+
+<p>
+  <b>Last invite date:</b>
+  <%= @friendship.last_invite_date %>
+</p>
+
+
+<%= link_to 'Edit', edit_friendship_path(@friendship) %> |
+<%= link_to 'Back', friendships_path %>

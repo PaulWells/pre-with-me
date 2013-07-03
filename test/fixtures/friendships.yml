@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  first_user_id: MyString
+  second_user_id: MyString
+  relationship: MyString
+  last_pre_date: MyString
+  last_invite_date: MyString
+
+two:
+  first_user_id: MyString
+  second_user_id: MyString
+  relationship: MyString
+  last_pre_date: MyString
+  last_invite_date: MyString

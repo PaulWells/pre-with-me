@@ -1,0 +1,33 @@
+<h1>Listing pres</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Date</th>
+    <th>Latitude</th>
+    <th>Longitude</th>
+    <th>Facebook event</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @pres.each do |pre| %>
+  <tr>
+    <td><%= pre.name %></td>
+    <td><%= pre.description %></td>
+    <td><%= pre.date %></td>
+    <td><%= pre.latitude %></td>
+    <td><%= pre.longitude %></td>
+    <td><%= pre.facebook_event_id %></td>
+    <td><%= link_to 'Show', pre %></td>
+    <td><%= link_to 'Edit', edit_pre_path(pre) %></td>
+    <td><%= link_to 'Destroy', pre, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Pre', new_pre_path %>

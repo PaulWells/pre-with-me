@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Name:</b>
+  <%= @pre.name %>
+</p>
+
+<p>
+  <b>Description:</b>
+  <%= @pre.description %>
+</p>
+
+<p>
+  <b>Date:</b>
+  <%= @pre.date %>
+</p>
+
+<p>
+  <b>Latitude:</b>
+  <%= @pre.latitude %>
+</p>
+
+<p>
+  <b>Longitude:</b>
+  <%= @pre.longitude %>
+</p>
+
+<p>
+  <b>Facebook event:</b>
+  <%= @pre.facebook_event_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_pre_path(@pre) %> |
+<%= link_to 'Back', pres_path %>

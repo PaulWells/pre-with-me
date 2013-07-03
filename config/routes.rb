@@ -1,4 +1,14 @@
 PreWithMe::Application.routes.draw do
+  resources :friendships
+  resources :pres
+  resources :users
+
+  get 'pres/:id/users' => 'pres#users'
+  get 'pres/:id/users/:user_id' => 'pres#user'
+  get 'users/:id/friendships' => 'users#friends'
+
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
