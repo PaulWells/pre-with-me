@@ -82,12 +82,49 @@ class UsersController < ApplicationController
 
   def friends
     @friends = Friendship.find_all_by_first_user_id(params[:id]) | Friendship.find_all_by_second_user_id(params[:id])
-
-
     respond_to do |format|
       format.json {render json: @friends}
     end
+  end
+
+  def pres
+    @user = User.find(params[:id])
+    @invites = Invite.find_all_by_user_id(params[:id])
+    @pres = Array.new
+
+    #this is BAD CODE
+    @invites.each do |invite|
+      @pre = Pre.find(invite.pre_id)
+      @pre.user_status=invite.status
+      @pres.push @pre
+    end
+
+    @pre = Pre.find_by_owner(params[:id])
+    if @pre != nil
+      @pre.user_status='owner'
+      @pres.push @pre
+    end
 
 
+
+    respond_to do |format|
+      format.json {render json: @pres}
+    end
+  end
+
+  def pre
+    pre_id = "%#{params[:pre_id]}%"
+    user_id = "%#{params[:id]}%"
+    @invites = Invite.where('pre_id LIKE ? AND user_id LIKE ?', pre_id, user_id)
+    @invite = @invites[0]
+
+    @pre = Pre.find(@invite.pre_id)
+
+    @pre.user_status=@invite.status if @pre != nil
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @pre}
+    end
   end
 end

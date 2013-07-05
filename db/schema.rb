@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130703045325) do
+ActiveRecord::Schema.define(:version => 20130705031457) do
+
+  create_table "affiliations", :force => true do |t|
+    t.string   "first_pre_id"
+    t.string   "second_pre_id"
+    t.string   "relationship"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.string   "distance"
+  end
 
   create_table "friendships", :force => true do |t|
     t.string   "first_user_id"
@@ -26,16 +35,25 @@ ActiveRecord::Schema.define(:version => 20130703045325) do
     t.string   "second_last_invite_date"
   end
 
+  create_table "invites", :force => true do |t|
+    t.string   "pre_id"
+    t.string   "user_id"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "pres", :force => true do |t|
     t.string   "name"
     t.string   "description"
-    t.string   "date"
-    t.integer  "latitude"
-    t.integer  "longitude"
+    t.float    "latitude"
+    t.float    "longitude"
     t.string   "facebook_event_id"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
     t.string   "owner"
+    t.string   "user_status"
+    t.string   "distance"
   end
 
   create_table "users", :force => true do |t|

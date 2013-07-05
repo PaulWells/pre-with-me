@@ -1,4 +1,4 @@
 class Pre < ActiveRecord::Base
-  attr_accessible :date, :description, :facebook_event_id, :latitude, :longitude, :name, :owner
+  attr_accessible :description, :facebook_event_id, :latitude, :longitude, :name, :owner, :user_status, :distance
   has_many :users
 end

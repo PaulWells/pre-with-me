@@ -1,6 +1,14 @@
 class PresController < ApplicationController
   # GET /pres
   # GET /pres.json
+
+  RAD_PER_DEG = 0.017453293
+  R_MILES = 3956           # radius of the great circle in miles
+  R_KM = 6371              # radius in kilometers...some algorithms use 6367
+  R_FEET = R_MILES * 5282   # radius in feet
+  R_METERS = R_KM * 1000
+
+
   def index
     @pres = Pre.all
 
@@ -12,7 +20,21 @@ class PresController < ApplicationController
 
   def users
     @pre = Pre.find(params[:id])
-    @users = @pre.users
+    @invites = Invite.find_all_by_pre_id(params[:id])
+
+    @users = Array.new
+
+    #this is BAD CODE
+    @invites.each do |invite|
+      @user = User.find(invite.user)
+      @user.pre_status=invite.status
+      @users.push @user
+    end
+
+    @user = User.find(@pre.owner)
+    @user.pre_status='owner'
+    @users.push @user
+
 
     respond_to do |format|
       format.html # index.html.erb
@@ -21,8 +43,13 @@ class PresController < ApplicationController
   end
 
   def user
-    @pre = Pre.find(params[:id])
-    @user = @pre.users.find(params[:user_id])
+    user_id = "%#{params[:user_id]}%"
+    pre_id = "%#{params[:id]}%"
+    @invites = Invite.where('user_id LIKE ? AND pre_id LIKE ?', user_id, pre_id)
+    @invite = @invites[0]
+    @user = User.find(@invite.user_id)
+    @user.pre_status=@invite.status
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @user }
@@ -59,6 +86,7 @@ class PresController < ApplicationController
   # POST /pres
   # POST /pres.json
   def create
+    @pres = Pre.all
     @pre = Pre.new(params[:pre])
 
     respond_to do |format|
@@ -70,6 +98,8 @@ class PresController < ApplicationController
         format.json { render json: @pre.errors, status: :unprocessable_entity }
       end
     end
+
+
   end
 
   # PUT /pres/1
@@ -99,4 +129,57 @@ class PresController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def closest_pres
+    @pres = Pre.all
+    @pre = Pre.find(params[:id])
+
+    @pres.delete(@pre)
+    closest_pres = Array.new
+
+    @pres.each do |pre|
+
+      pre.distance = haversine_distance(pre.latitude,pre.longitude,@pre.latitude,@pre.longitude)
+      closest_pres.push pre
+    end
+
+    closest_pres.sort! { |a,b| a.distance <=> b.distance}
+    offset = params[:offset].to_i
+    count = params[:count].to_i
+    closest_pres = closest_pres[offset,count]
+
+    respond_to do |format|
+      format.json { render json: closest_pres }
+    end
+
+  end
+
+  def haversine_distance( lat1, lon1, lat2, lon2 )
+
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+
+    dlon_rad = dlon * RAD_PER_DEG
+    dlat_rad = dlat * RAD_PER_DEG
+
+    lat1_rad = lat1 * RAD_PER_DEG
+    lon1_rad = lon1 * RAD_PER_DEG
+
+    lat2_rad = lat2 * RAD_PER_DEG
+    lon2_rad = lon2 * RAD_PER_DEG
+
+    a = (Math.sin(dlat_rad/2))**2 + Math.cos(lat1_rad) * Math.cos(lat2_rad) * (Math.sin(dlon_rad/2))**2
+    c = 2 * Math.atan2( Math.sqrt(a), Math.sqrt(1-a))
+
+    #dMi = Rmiles * c          # delta between the two points in miles
+    #dKm = Rkm * c             # delta in kilometers
+    #dFeet = Rfeet * c         # delta in feet
+    dMeters = R_METERS * c     # delta in meters
+
+    #@distances["mi"] = dMi
+    #@distances["km"] = dKm
+    #@distances["ft"] = dFeet
+    @distance = dMeters
+  end
+
 end

@@ -1,11 +1,20 @@
 PreWithMe::Application.routes.draw do
+  resources :affiliations
+
+
+  resources :invites
+
+
   resources :friendships
   resources :pres
   resources :users
 
   get 'pres/:id/users' => 'pres#users'
   get 'pres/:id/users/:user_id' => 'pres#user'
+  get 'pres/:id/closest/:count/:offset' => 'pres#closest_pres'
   get 'users/:id/friendships' => 'users#friends'
+  get 'users/:id/pres' => 'users#pres'
+  get 'users/:id/pres/:pre_id' => 'users#pre'
 
 
 
