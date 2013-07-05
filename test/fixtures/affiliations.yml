@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  first_pre_id: MyString
+  second_pre_id: MyString
+  relationship: MyString
+
+two:
+  first_pre_id: MyString
+  second_pre_id: MyString
+  relationship: MyString

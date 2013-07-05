@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>First pre:</b>
+  <%= @affiliation.first_pre_id %>
+</p>
+
+<p>
+  <b>Second pre:</b>
+  <%= @affiliation.second_pre_id %>
+</p>
+
+<p>
+  <b>Relationship:</b>
+  <%= @affiliation.relationship %>
+</p>
+
+
+<%= link_to 'Edit', edit_affiliation_path(@affiliation) %> |
+<%= link_to 'Back', affiliations_path %>
