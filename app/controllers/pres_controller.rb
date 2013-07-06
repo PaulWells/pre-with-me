@@ -11,10 +11,21 @@ class PresController < ApplicationController
 
   def index
     @pres = Pre.all
+    @pres_with_owner = Array.new
+
+    @pres.each  do |pre|
+      @pre_with_owner = Array.new
+
+      @pre_with_owner.push pre
+      @owner = User.find(pre.owner)
+      @pre_with_owner.push  @owner
+      @pres_with_owner.push @pre_with_owner
+    end
+
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @pres }
+      format.json { render json: @pres_with_owner }
     end
   end
 
@@ -59,11 +70,14 @@ class PresController < ApplicationController
   # GET /pres/1
   # GET /pres/1.json
   def show
+    @pre_with_owner = Array.new
     @pre = Pre.find(params[:id])
+    @pre_with_owner.push @pre
+    @pre_with_owner.push User.find(@pre.owner)
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render json: @pre }
+      format.json { render json: @pre_with_owner }
     end
   end
 
@@ -140,6 +154,13 @@ class PresController < ApplicationController
     @pres.each do |pre|
 
       pre.distance = haversine_distance(pre.latitude,pre.longitude,@pre.latitude,@pre.longitude)
+      @affiliations = Affiliation.where('first_pre_id LIKE ? AND second_pre_id LIKE ?', @pre.id, pre.id )
+
+      if (@affiliations.count == 1)
+        @affiliation = @affiliations[0]
+        pre.status = @affiliation.relationship
+      end
+
       closest_pres.push pre
     end
 

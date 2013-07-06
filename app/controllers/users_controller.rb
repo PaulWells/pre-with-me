@@ -95,13 +95,13 @@ class UsersController < ApplicationController
     #this is BAD CODE
     @invites.each do |invite|
       @pre = Pre.find(invite.pre_id)
-      @pre.user_status=invite.status
+      @pre.status=invite.status
       @pres.push @pre
     end
 
     @pre = Pre.find_by_owner(params[:id])
     if @pre != nil
-      @pre.user_status='owner'
+      @pre.status='owner'
       @pres.push @pre
     end
 
@@ -116,11 +116,13 @@ class UsersController < ApplicationController
     pre_id = "%#{params[:pre_id]}%"
     user_id = "%#{params[:id]}%"
     @invites = Invite.where('pre_id LIKE ? AND user_id LIKE ?', pre_id, user_id)
-    @invite = @invites[0]
+    if @invites.count >= 1
+      @invite = @invites[0]
+    end
 
     @pre = Pre.find(@invite.pre_id)
 
-    @pre.user_status=@invite.status if @pre != nil
+    @pre.status=@invite.status if @pre != nil
 
     respond_to do |format|
       format.html # show.html.erb
