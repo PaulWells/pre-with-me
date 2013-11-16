@@ -108,7 +108,7 @@ class UsersController < ApplicationController
 
 
     respond_to do |format|
-      format.json {render json: @pres}
+      format.json {render json: @presf}
     end
   end
 
